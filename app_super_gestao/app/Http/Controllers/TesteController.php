@@ -12,10 +12,6 @@ class TesteController extends Controller
 
         // p1 virara $p1 e p2
         // return view('site.teste', compact('p1','p2'));
-        return view('site.teste')->with(
-            'p1',
-            $p1,
-         
-        );
+        return view('site.teste',['x'=>$p1, 'y'=> $p2]);
     }
 }
