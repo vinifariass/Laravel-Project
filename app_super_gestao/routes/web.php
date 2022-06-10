@@ -20,6 +20,8 @@ Route::get('/sobre-nos', [\App\Http\Controllers\SobreNosController::class, 'sobr
 
 Route::get('/contato', [\App\Http\Controllers\ContatoController::class, 'contato'])->name('site.contato');
 Route::post('/contato', [\App\Http\Controllers\ContatoController::class, 'salvar'])->name('site.contato');
+Route::post('/login', [\App\Http\Controllers\LoginController::class, 'autenticar'])->name('site.login');
+Route::get('/login', [\App\Http\Controllers\LoginController::class, 'index'])->name('site.login');
 
 Route::middleware('autenticacao:padrao,visitante,p3,p4')->prefix('app')->group(function () {
 
