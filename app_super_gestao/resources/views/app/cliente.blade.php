@@ -1,11 +1,12 @@
 @extends('app.layouts.basico')
 
 
-@section('titulo', 'Produto')
+@section('titulo', 'Cliente')
 
 @section('conteudo')
     <br>
     <br>
-    <br>Produto
+    <br>
+    <br>Cliente
     {{-- o yield envia blocos para outras views --}}
 @endsection
