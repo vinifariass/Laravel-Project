@@ -23,21 +23,20 @@
                             <th>Nome</th>
                             <th>Site</th>
                             <th>UF</th>
-                            <th>UF</th>
                             <th>E-mail</th>
-                            <th></th>
-                            <th></th>
+                            <th>Excluir</th>
+                            <th>Editar</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($fornecedores as $fornecedor)
                             <tr>
-                                <td>{{$fornecedor->nome}}</td>
-                                <td>{{$fornecedor->site}}</td>
-                                <td>{{$fornecedor->uf}}</td>
-                                <td>{{$fornecedor->email}}</td>
+                                <td>{{ $fornecedor->nome }}</td>
+                                <td>{{ $fornecedor->site }}</td>
+                                <td>{{ $fornecedor->uf }}</td>
+                                <td>{{ $fornecedor->email }}</td>
                                 <td>Excluir</td>
-                                <td>Editar</td>
+                                <td><a href="{{ route('app.fornecedor.editar',$fornecedor->id) }}">Editar</a></td>
                             </tr>
                         @endforeach
 

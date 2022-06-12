@@ -38,7 +38,7 @@ Route::middleware('autenticacao:padrao,visitante,p3,p4')->prefix('app')->group(f
 
   Route::get('/fornecedor/adicionar', [\App\Http\Controllers\FornecedorController::class, 'adicionar'])->name('app.fornecedor.adicionar');
   Route::post('/fornecedor/adicionar', [\App\Http\Controllers\FornecedorController::class, 'adicionar'])->name('app.fornecedor.adicionar');
-
+  Route::get('/fornecedor/editar/{id}/{msg?}', [\App\Http\Controllers\FornecedorController::class, 'editar', 'editar'])->name('app.fornecedor.editar');
   Route::get(
     '/produto',
     [\App\Http\Controllers\ProdutoController::class, 'index']
