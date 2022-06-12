@@ -1,10 +1,12 @@
-html, body {
+html,
+body {
     height: 100%;
     margin: 0;
     font-family: 'Roboto', sans-serif;
 }
 
-p, span {
+p,
+span {
     color: #ffffff;
 }
 
@@ -18,7 +20,10 @@ h2 {
     font-size: 22px;
 }
 
-input, select, textarea, button {
+input,
+select,
+textarea,
+button {
     width: 100%;
     padding: 10px 15px;
     margin: 10px 0px 10px 0px;
@@ -106,24 +111,25 @@ button:hover {
 .conteudo-destaque {
     width: 100%;
     height: 100%;
-    min-height: 800px; 
+    min-height: 800px;
 }
 
 .esquerda {
-    float:left;
+    float: left;
     background-color: #268fd0;
     width: 60%;
     height: 100%;
 }
 
 .direita {
-    float:right;
+    float: right;
     background-color: #2a9ee2;
     width: 40%;
     height: 100%;
 }
 
-.informacoes, .contato {
+.informacoes,
+.contato {
     margin: 100px 40px 40px 40px;
 }
 
@@ -170,7 +176,7 @@ button:hover {
     margin-top: 30px;
 }
 
-.informacao-pagina p{
+.informacao-pagina p {
     color: #333;
 }
 
@@ -178,19 +184,38 @@ button:hover {
     width: 100%;
 }
 
-.redes-sociais, .area-contato, .localizacao {
+.redes-sociais,
+.area-contato,
+.localizacao {
     width: 33.333%;
-    border-top:solid 1px #ccc;
+    border-top: solid 1px #ccc;
     float: left;
     text-align: center;
     background-color: #f8f8f8;
     height: 250px;
 }
 
-.redes-sociais, .area-contato, .localizacao p, span {
+.redes-sociais,
+.area-contato,
+.localizacao p,
+span {
     color: #333333;
 }
 
 .redes-sociais img {
     margin: 0px 15px 0px 15px;
+}
+
+.relative {
+    display: inline;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.relative {
+    list-style-type: none;
+}
+
+.listaFornecedor svg{
+    width: 5%;
 }

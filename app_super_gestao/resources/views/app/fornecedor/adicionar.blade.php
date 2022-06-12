@@ -17,10 +17,10 @@
           {{$msg ?? ''}}
             <div style="width:30%;margin-left:auto;margin-right:auto;">
                 <form action="{{route('app.fornecedor.adicionar')}}" method="POST">
-                    <input type="hidden" name="id" value="{{ $fornecedor->id  }}">
-               
+                    
                     @csrf
-                  <input type="text" name="nome" placeholder="Nome" value="{{ $fornecedor->nome ?? old('nome') }}" class="borda-preta">
+                    <input type="hidden" name="id" value="{{ $fornecedor->id  }}">
+                    <input type="text" name="nome" placeholder="Nome" value="{{ $fornecedor->nome ?? old('nome') }}" class="borda-preta">
                   {{ $errors->has('nome') ? $errors->first('nome') : '' }}
                   <input type="text" name="site" value="{{ $fornecedor->site ?? old('site') }}" placeholder="Site" class="borda-preta">
                   {{ $errors->has('site') ? $errors->first('site') : '' }}
