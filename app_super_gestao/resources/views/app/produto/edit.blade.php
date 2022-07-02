@@ -5,7 +5,7 @@
 @section('conteudo')
     <div class="conteudo-pagina">
         <div class="titulo-pagina-2">
-            <p>Adicionar Produto</p>
+            <p>Editar Produto</p>
         </div>
         <div class="menu">
             <ul>
@@ -16,10 +16,10 @@
         <div class="informacao-pagina">
             {{ $msg ?? '' }}
             <div style="width:30%;margin-left:auto;margin-right:auto;">
-                @componet('app.produto._components.form_create_edit', ['unidades' => $unidades])
-            @endcomponent
+                @componet('app.produto._components.form_create_edit',['produto' => $produto, 'unidades' => $unidades])
+                @endcomponent
+            </div>
         </div>
     </div>
-</div>
-{{-- o yield envia blocos para outras views --}}
+    {{-- o yield envia blocos para outras views --}}
 @endsection
