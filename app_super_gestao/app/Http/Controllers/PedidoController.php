@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cliente;
+use App\Models\Pedido;
 use Illuminate\Http\Request;
 
 class PedidoController extends Controller
@@ -11,9 +13,10 @@ class PedidoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $pedidos = Pedido::paginate(10);
+        return view('app.pedido.index', ['pedidos' => $pedidos, 'request' => $request->all()]);
     }
 
     /**
@@ -23,7 +26,8 @@ class PedidoController extends Controller
      */
     public function create()
     {
-        //
+        $clientes = Cliente::all();
+        return view('app.pedido.create', ['clientes' => $clientes]);
     }
 
     /**

@@ -8,7 +8,7 @@
 @endif
 
 <select name="fornecedor_id" id="fornecedor_id">
-    <option value="{{ old('peso') }}">-- Seleciona a Unidade de Media --</option>
+    <option>-- Selecione um Fornecedor --</option>
     @foreach ($fornecedores as $fornecedor)
         <option value="{{ $fornecedor->id }}"
             {{ $produto->fornecedor_id ?? old('fornecedor_id') == $fornecedor->id ? 'selected' : '' }}>
