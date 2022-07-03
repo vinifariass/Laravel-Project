@@ -53,8 +53,8 @@
                                     <tbody>
                                         @foreach ($fornecedor->produtos as $key => $produto)
                                             <tr>
-                                                <td></td>
-                                                <td></td>
+                                                <td>{{$produto->id}}</td>
+                                                <td>{{$produto->nome}}</td>
                                             </tr>
                                         @endforeach
 

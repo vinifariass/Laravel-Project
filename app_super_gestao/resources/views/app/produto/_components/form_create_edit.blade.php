@@ -7,6 +7,17 @@
             @csrf
 @endif
 
+<select name="fornecedor_id" id="fornecedor_id">
+    <option value="{{ old('peso') }}">-- Seleciona a Unidade de Media --</option>
+    @foreach ($fornecedores as $fornecedor)
+        <option value="{{ $fornecedor->id }}"
+            {{ $produto->fornecedor_id ?? old('fornecedor_id') == $fornecedor->id ? 'selected' : '' }}>
+            {{ $fornecedor->nome }}</option>
+    @endforeach
+</select>
+{{ $errors->has('fornecedor_id') ? $errors->first('fornecedor_id') : '' }}
+
+
 <input type="text" name="nome" placeholder="Nome" value="{{ $produto->nome ?? old('nome') }}" class="borda-preta">
 {{ $errors->has('nome') ? $errors->first('nome') : '' }}
 <input type="text" name="descricao" value="{{ $produto->descricao ?? old('descricao') }} placeholder="Descrição"
