@@ -38,7 +38,14 @@ class PedidoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $regras = ['cliente_id' => 'exist:clientes,id'];
+
+        $feedback = ['cliente_id.exists' => 'O cliente informado não existe'];
+        $request->validate($regras, $feedback);
+        $pedido = new Pedido();
+        $pedido ->cliente_id=$request->get('cliente_id');
+        $pedido->save();
+        return redirect()->route('pedido.index');
     }
 
     /**

@@ -22,7 +22,10 @@
                 <table border="1" width="100%">
                     <thead>
                         <tr>
-                            <th>Nome</th>
+                            <th>ID Pedido</th>
+                            <th>Cliente</th>
+                            <th></th>
+                            <th></th>
                             <th></th>
                             <th></th>
                         </tr>
@@ -33,6 +36,8 @@
                             <tr>
                                 <td>{{ $pedido->id }}</td>
                                 <td>{{ $pedido->cliente_id }}</td>
+                                <td><a href="{{ route('pedido-produto.create', ['pedido' => $pedido->id]) }}">Adicionar
+                                        Produtos</a></td>
                                 <td><a href={{ route('pedido.show', ['pedido' => $pedido->id]) }}">Visualizar</a></td>
                                 <td>
                                     <form id="form_{{ $pedido->$$id }}" method="post"
@@ -53,16 +58,16 @@
                 {{ $pedidos->appends($request)->links() }}
 
                 <!--
-                            <br>
-                            {{ $pedidos->count() }} - Total de registros por página
-                            <br>
-                            {{ $pedidos->total() }} - Total de registros da consulta
-                            <br>
-                            {{ $pedidos->firstItem() }} - Número do primeiro registro da página
-                            <br>
-                            {{ $pedidos->lastItem() }} - Número do último registro da página
+                                    <br>
+                                    {{ $pedidos->count() }} - Total de registros por página
+                                    <br>
+                                    {{ $pedidos->total() }} - Total de registros da consulta
+                                    <br>
+                                    {{ $pedidos->firstItem() }} - Número do primeiro registro da página
+                                    <br>
+                                    {{ $pedidos->lastItem() }} - Número do último registro da página
 
-                            -->
+                                    -->
                 <br>
                 Exibindo {{ $pedidos->count() }} pedidos de {{ $pedidos->total() }} (de
                 {{ $pedidos->firstItem() }} a {{ $pedidos->lastItem() }})
