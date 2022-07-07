@@ -19,7 +19,25 @@
             <p>ID do pediddo: {{ $pedido->id }}</p>
             <p>Cliente: {{ $pedido->cliente_id }}</p>
             <div style="width:30%;margin-left:auto;margin-right:auto;">
-                @componet('app.pedido_produto._components.form_create',['pedido'=>$pedido,'produtos'=>$produtos])
+                <table border="1" width="100%">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome do Produto</th>
+                            <th>Data de inclusão do pedido</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach ($pedido->produto as $produto)
+                            <tr>
+                                <td>{{$produto->id}}</td>
+                                <td>{{$produto->nome}}</td>
+                                <td>{{$produto->pivot->created_at->format('d/m/Y')}}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                @componet('app.pedido_produto._components.form_create', ['pedido' => $pedido, 'produtos' => $produtos])
             @endcomponent
         </div>
     </div>

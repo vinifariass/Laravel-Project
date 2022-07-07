@@ -45,9 +45,9 @@
                                 <td>{{ $produto->fornecedor->site }}</td>
                                 <td>{{ $produto->peso }}</td>
                                 <td>{{ $produto->unidade_id }}</td>
-                                <td>{{ $produto->itemDetalhe->comprimento ?? ''}}</td>
+                                <td>{{ $produto->itemDetalhe->comprimento ?? '' }}</td>
                                 <td>{{ $produto->itemDetalhe->altura ?? '' }}</td>
-                                <td>{{ $produto->itemDetalhe->largura  ?? ''}}</td>
+                                <td>{{ $produto->itemDetalhe->largura ?? '' }}</td>
                                 <td><a href={{ route('produto.show', ['produto' => $produto->id]) }}">Visualizar</a></td>
                                 <td>
                                     <form id="form_{{ $produto->$$id }}" method="post"
@@ -61,6 +61,14 @@
                                 </form>
                                 <td><a href="{{ route('produto.edit', ['produto' => $produto->id]) }}">Editar</a></td>
                             </tr>
+
+                            <tr colspan="12">
+                                <p>Pedidos</p>
+                                @foreach ($produto->pedidos as $pedido)
+                                    <a href="{{ route('pedido-produto.create', ['pedido' => $pedido->id]) }}"></a>
+                                    Pedido:{{ $pedido->id }},
+                                @endforeach
+                            </tr>
                         @endforeach
                     </tbody>
                 </table>
@@ -68,16 +76,16 @@
                 {{ $produtos->appends($request)->links() }}
 
                 <!--
-                            <br>
-                            {{ $produtos->count() }} - Total de registros por página
-                            <br>
-                            {{ $produtos->total() }} - Total de registros da consulta
-                            <br>
-                            {{ $produtos->firstItem() }} - Número do primeiro registro da página
-                            <br>
-                            {{ $produtos->lastItem() }} - Número do último registro da página
+                                <br>
+                                {{ $produtos->count() }} - Total de registros por página
+                                <br>
+                                {{ $produtos->total() }} - Total de registros da consulta
+                                <br>
+                                {{ $produtos->firstItem() }} - Número do primeiro registro da página
+                                <br>
+                                {{ $produtos->lastItem() }} - Número do último registro da página
 
-                            -->
+                                -->
                 <br>
                 Exibindo {{ $produtos->count() }} produtos de {{ $produtos->total() }} (de
                 {{ $produtos->firstItem() }} a {{ $produtos->lastItem() }})
