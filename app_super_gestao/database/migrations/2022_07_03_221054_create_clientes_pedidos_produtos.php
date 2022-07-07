@@ -25,7 +25,7 @@ class CreateClientesPedidosProdutos extends Migration
 
             $table->foreign('cliente_id')->references('id')->on('clientes');
         });
-        Schema::create('pedido_produtos', function (Blueprint $table) {
+        Schema::create('pedidos_produtos', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('pedido_id');
             $table->unsignedBigInteger('produto_id');

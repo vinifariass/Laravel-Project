@@ -28,7 +28,7 @@ class PedidoProdutoController extends Controller
 
     {
         $produtos = Produto::all();
-        $pedido ->produtos; //eager loading
+        $pedido->produtos; //eager loading
         return view('app.pedido_produto.create', ['pedido' => $pedido, 'produtos' => $produtos]);
     }
 
@@ -40,14 +40,31 @@ class PedidoProdutoController extends Controller
      */
     public function store(Request $request, Pedido $pedido)
     {
-        $regras = ['produto_id' => 'exists:produtos,id'];
+        $regras = [
+            'produto_id' => 'exists:produtos,id',
+            'quantidade' => 'required',
+        ];
 
-        $feedback = ['produto_id.exists' => 'O produto informado não existe'];
-        $request->validate($regras, $feedback);
+        $feedback = [
+            'produto_id.exists' => 'O produto informado não existe',
+            'required' => 'O campo :attribute deve  possuir um valor válido'
+        ];
+        // $request->validate($regras, $feedback);
 
-        $pedidoProduto = new PedidoProduto();
-        $pedidoProduto->pedido_id = $pedido->id;
-        $pedidoProduto->produto_id = $request->GET('produto_id');
+        // $pedidoProduto = new PedidoProduto();
+        // $pedidoProduto->pedido_id = $pedido->id;
+        // $pedidoProduto->produto_id = $request->GET('produto_id');
+        // $pedido->produtos;
+        // $pedido->produtos()->attach(
+        //     $request->get('produto_id'),
+        //     [
+        //         'quantidade' => $request->get('quantidade'),
+        //         'coluna_1' => '',
+        //     ]
+        // );
+        $pedido->produtos->attach([
+            'produto_id' => [$request->get('produto_id') => $request->get('quantidade')]
+        ]);
         return redirect()->route('pedido-produto.create', ['pedido' => $pedido->id]);
     }
 
@@ -91,8 +108,8 @@ class PedidoProdutoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Pedido $pedido,Produto $produto)
     {
-        //
+        print_r($pedido->getAttributes());
     }
 }

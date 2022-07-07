@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,13 +41,14 @@ Route::middleware('autenticacao:padrao,visitante,p3,p4')->prefix('app')->group(f
 
   //produtos
   Route::resource('produto', 'ProdutoController');
- //produto detalhes
+  //produto detalhes
   Route::resource('produto-detalhe', 'ProdutoDetalheController');
   Route::resource('cliente', 'ClienteController');
   Route::resource('pedido', 'PedidoController');
   // Route::resource('pedido-produto', 'PedidoProdutoController');
-  Route::get('/pedido-produto/create/{pedido}',[\App\Http\Controllers\PedidoController::class, 'create'])->name('pedido-produto.create');
-  Route::post('/pedido-produto/store/{pedido}',[\App\Http\Controllers\PedidoController::class, 'store'])->name('pedido-produto.store');
+  Route::get('/pedido-produto/create/{pedido}', [\App\Http\Controllers\PedidoController::class, 'create'])->name('pedido-produto.create');
+  Route::post('/pedido-produto/store/{pedido}', [\App\Http\Controllers\PedidoController::class, 'store'])->name('pedido-produto.store');
+  Route::delete('pedido-produto.destroy/{pedido}/{produto}', [App\Http\Conrollers\PedidoProdutoController::class, 'destroy'])->name('pedido-produto.destroy');
 });
 
 Route::get('/teste/{p1}/{p2}', [\App\Http\Controllers\TesteController::class, 'teste'])->name('site.teste');
