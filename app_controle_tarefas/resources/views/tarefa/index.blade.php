@@ -14,10 +14,11 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th scope="col">ID</th>
-                                    <th scope="col">Tarefa</th>
-                                    <th scope="col">Data Limite Conclusão</th>
-                                    <th scope="col"></th>
+                                    <th >ID</th>
+                                    <th >Tarefa</th>
+                                    <th >Data Limite Conclusão</th>
+                                    <th ></th>
+                                    <th ></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -28,6 +29,13 @@
                                     <td>{{ $t['tarefa'] }}</td>
                                     <td>{{ date('d/m/Y', strtotime($t['data_limite_conclusao'])) }}</td>
                                     <td><a href="{{route('tarefa.edit',$t['id']) }}">Editar</a></td>
+                                    <td>
+                                      <form id="form_{{$t['id']}}" method="post" action="{{route('tarefa.destroy',['tarefa'=>$t['id']])}}">
+                                      @method("DELETE")
+                                      @csrf
+                                    
+                                    </form>
+                                    <a href="" onclick="document.getElementById('form_{{$t['id']}}').submit()">Excluir</a></td>
                                 </tr>
                             </tbody>
                         </table>
