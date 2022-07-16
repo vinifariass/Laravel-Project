@@ -6,7 +6,7 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
-                        Tarefas
+                        Tarefas <a href="{{route('tarefa.create')}}" class="float-right">Novo</a>
 
                     </div>
 
