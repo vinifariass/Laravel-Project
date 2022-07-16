@@ -18,10 +18,9 @@ class TarefaController extends Controller
      */
     public function index()
     {
-        $id = auth()->user()->id;
-        $name = auth()->user()->name;
-        $email = auth()->user()->email;
-        return "ID: $id | Nome: $name | Email: $email";
+        $user_id = auth()->user()->id;
+        $tarefas = Tarefa::where('user_id', $user_id)->get();
+        return view('tarefa.index',['tarefas'=>$tarefas]);
     }
 
     /**
@@ -42,7 +41,9 @@ class TarefaController extends Controller
      */
     public function store(Request $request)
     {
-        $tarefa = Tarefa::create($request->all());
+        $dados = $request->all('tarefa', 'data_limite_conclusao');
+        $dados["user_id"] =  auth()->user()->id;
+        $tarefa = Tarefa::create($dados);
         $destinatario = auth()->user()->email;
         //pega o email do usuario autenticado e dispara a mensagem com base na classe de email e fala detalhes sobre a tarefa depois
         Mail::to($destinatario)->send(new NovaTarefaMail($tarefa));
@@ -57,7 +58,7 @@ class TarefaController extends Controller
      */
     public function show(Tarefa $tarefa)
     {
-        //
+        return view('tarefa.show', ['tarefa' => $tarefa]);
     }
 
     /**
