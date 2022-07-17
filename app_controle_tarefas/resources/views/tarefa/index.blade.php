@@ -7,7 +7,7 @@
                 <div class="card">
                     <div class="card-header">
                         Tarefas <a href="{{route('tarefa.create')}}" class="float-right">Novo</a>
-
+                        XLSX <a href="{{route('tarefa.exportacao')}}" class="float-right">Novo</a>
                     </div>
 
                     <div class="card-body">

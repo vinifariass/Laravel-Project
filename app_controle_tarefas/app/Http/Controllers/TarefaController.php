@@ -70,7 +70,7 @@ class TarefaController extends Controller
     public function edit(Tarefa $tarefa)
     {
         if ($tarefa->user_id ==  auth()->user()->id) {
-            
+
             return view('tarefa.edit', ['tarefa' => $tarefa]);
         }
         return view('acesso-negado');
@@ -105,6 +105,10 @@ class TarefaController extends Controller
         }
         $tarefa->delete();
         return redirect()->route('tarefa.index');
+    }
 
+    public function exportacao()
+    {
+        return 'Exportar arquivo no método XLSX';
     }
 }
