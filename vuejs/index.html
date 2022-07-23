@@ -12,13 +12,35 @@
 <body>
 
   <div id="app">
-
+    {{somar()}}
+    {{multiplicar()}}
+    {{subtrair()}}
+    {{dividir()}}
   </div>
   <script>
     options = {
       el: '#app',
       data: {
-        mensagem: 'Primeiro template controlado pelo Vue'
+
+        n1: 10,
+        n2: 5
+      },
+      methods: {
+        somar: function somar() {
+          return this.n1 + this.n2
+        },
+        subtrair: function () {
+          return 4 - 2;
+        },
+        multiplicar: () => {
+          return 4 * 2;
+        },
+        dividir() {
+          let f = () => {
+            console.log('*****', this)
+            return Teste;
+          }
+        }
       }
     }
     const vm = new Vue(options);
