@@ -19,11 +19,11 @@ class TarefasExport implements FromCollection, WithHeadings,WithMapping
 
     public function headings(): array
     {
-        return ['ID da Tarefa', 'ID do Usuário', 'Tarefa', 'Data limite conclusão', 'Data criação', 'Data atualização'];
+        return ['ID da Tarefa', 'ID do Usuário', 'Tarefa', 'Data limite conclusão', 'Data criação'];
     }
 
     public function map($row): array
     {
-        
+        return[$row->id,$row->tarefa,$row->data_limite_conclusao];
     }
 }
