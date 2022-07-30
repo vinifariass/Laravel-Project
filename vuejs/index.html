@@ -7,39 +7,95 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="./vue.js"></script>
   <title>Document</title>
+  <style>
+    .vermelho {
+      color: red
+    }
+
+    .verde {
+      background-color: green;
+    }
+
+    .branco {
+      background-color: white;
+    }
+
+    .azul {
+      background-color: blue;
+    }
+
+    .div-principal {
+      width: 200px;
+      height: 200px;
+    }
+
+    .div-comum {
+      width: 50px;
+      height: 50px;
+      display: inline-block;
+    }
+  </style>
+
 </head>
 
 <body>
 
   <div id="app">
-    {{somar()}}
-    {{multiplicar()}}
-    {{subtrair()}}
-    {{dividir()}}
+    <a href="https://jorgesantana.net.br" target="_blank" v-on:click="prevenirComportamentoPadrao()"></a>
+    Link
+    </a>
+    <br>Mensagem: {{msg}}
+    <hr>
+    <button @click.once="executarUmaVez()">Botão</button>
+    <p>Cliques: {{cliques}}</p>
+    <hr>
+    <form @submit="prevenirUmaVez()">
+      <button type="submit">Enviar</button>
+    </form>
+    <input type="text" @keyup="capturandoTeclas($event)">
+    <p>Teclas: {{teclas}}</p>
+    <!-- <div class="borda div-principal" :class="cor">
+      Cor: {{cor}}
+    <br>
+    Posicao X do Mouse: {{posicaoX}}
+    Posicao Y do Mouse: {{posicaoY}}
+    </div>
+    <div @click="mudarCor('verde')" class="borda div-comum" ></div>
+    <div class=" borda div-comum" @mouseover="mudarCor('azul')" @mouseout="mudarCor('vermelho')"></div>
+    <div class=" borda div-comum" @mousemove="coordenadas($event)"></div> -->
   </div>
   <script>
     options = {
       el: '#app',
       data: {
-
-        n1: 10,
-        n2: 5
+        cor: 'branco',
+        posicaoX: 0,
+        posicaoY: 0,
+        mgs: '',
+        cliques: 0,
+        formualar: '',
+        teclas:''
       },
       methods: {
-        somar: function somar() {
-          return this.n1 + this.n2
+        mudarCor(c) {
+          this.cor = c;
         },
-        subtrair: function () {
-          return 4 - 2;
+        coordenass(e) {
+          this.posicaoX = e.clientX
+          this.posicaoY = e.clientY
+          console.log(e.clientX, e.clientY)
         },
-        multiplicar: () => {
-          return 4 * 2;
+        prevenirComportamentoPadrao() {
+          event.preventDefault()
+          this.msg = "Comportamento Padrão ativado";
         },
-        dividir() {
-          let f = () => {
-            console.log('*****', this)
-            return Teste;
-          }
+        executarUmaVez() {
+          this.cliques++
+        }, prevenirUmaVez() {
+          this.formulario = "Prevenindo o comportamento padrão"
+        },
+        capturandoTelcas(event){
+          this.event += event.key
         }
       }
     }
