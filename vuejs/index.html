@@ -52,7 +52,7 @@
     <form @submit="prevenirUmaVez()">
       <button type="submit">Enviar</button>
     </form>
-    <input type="text" @keyup="capturandoTeclas($event)">
+    <input type="text" @keyup.Shift.Enter="capturandoTeclas($event)">
     <p>Teclas: {{teclas}}</p>
     <!-- <div class="borda div-principal" :class="cor">
       Cor: {{cor}}
@@ -74,7 +74,7 @@
         mgs: '',
         cliques: 0,
         formualar: '',
-        teclas:''
+        teclas: ''
       },
       methods: {
         mudarCor(c) {
@@ -94,8 +94,8 @@
         }, prevenirUmaVez() {
           this.formulario = "Prevenindo o comportamento padrão"
         },
-        capturandoTelcas(event){
-          this.event += event.key
+        capturandoTelcas(event) {
+          this.event = 'Modificadores encadiados com sucesso!'
         }
       }
     }
