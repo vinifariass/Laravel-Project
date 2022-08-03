@@ -31,7 +31,7 @@
     <hr>
     <h4>Pacientes do plano Ouro</h4>
     ....
-    <p v-for="p in pacientes">{{p.plano == "Ouro" ? p.nome : ''}}</p>
+    <p v-for="p in pacientesPlanoOuro">{{p.nome}}</p>
     <hr>
     <h4>Pacientes cadastrados</h4>
     <p v-for="p in pacientes">{{p.nome}}</p>
@@ -59,6 +59,9 @@
           txt += 'Paciente' + this.pacientes[key].nome, 'Idade' + this.pacientes[key].idade, 'Plano' + this.pacientes[key].plano
           return txt
 
+        },
+        pacientesPlanoOuro() {
+          return this.pacientes.filter(item => item.plano == 'Ouro')
         }
       }
     }

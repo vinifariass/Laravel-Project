@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="./vue.js"></script>
+  <title>Document</title>
+  <style>
+  </style>
+
+</head>
+
+<body>
+
+  <div id="app">
+    {{paciente}}<br>
+    <input type="text" v-bind:value="paciente" v-on:keyup="setPaciente($event)">
+    <input type="text" v-model="paciente">
+
+    <input type="radio" value="f" v-model="sexo">
+    <input type="radio" value="m" v-model="sexo">
+    <br>{{sexo}}
+    <hr>
+    <select name="" id="" v-model="plano">
+      <option value="" disabled>Selecione um plano</option>
+      <option value="1">Básico 1</option>
+      <option value="2">Básico 2</option>
+      <option value="3">Master</option>
+    </select>
+    <hr>{{plano}}
+    <hr>
+    <input type="checkbox" value="100" v-model="doencas">Asma
+    <input type="checkbox" value="101" v-model="doencas">Diabetes tipo 1
+    <input type="checkbox" value="102" v-model="doencas">Rinite
+    <br>{{doencas}}
+  </div>
+  <script>
+    options = {
+      el: '#app',
+      data: {
+        template: true,
+        paciente: 'Joao da Silva',
+        sexo: '',
+        plano: "",
+        doencas: []
+      },
+      methods: {
+        setPaciente(e) {
+          this.paciente = e.target.value
+        }
+      },
+      computed: {}
+    }
+    const vm = new Vue(options);
+    console.log(vm);//view model = vm</script>
+</body>
+
+</html>
