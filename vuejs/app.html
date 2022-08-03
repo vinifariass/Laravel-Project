@@ -15,46 +15,71 @@
 <body>
 
   <div id="app">
-    <button @click="exibirSaldo = !exibirSaldo">
-      <span v-if="!exibirSaldo">Exibir saldo</span>
-      <span v-if="exibirSaldo">Ocultar saldo</span>
-    </button>
+    <p @mouseover="exibirTextoAjuda = true" @mouseout="exibirTextoAjuda = false">Exemplo tooltip</p>
+    <div v-show="exibirTextoAjuda">
+      <h3>Título texto ajuda</h3>
+      <p>Contendo texto ajuda</p>
+      <ul>
+        <li v-for="(curso,key) in cursos" v-text="chave">{{chave}} - {{curso}}</li>
+      </ul>
 
-    <!-- toggle -->
-    <p>Saldo: <span v-if="exibirSaldo">R$: {{saldo}}</span></p>
+      <table>
+        <thead>
+          <tr>
+            ID
+          </tr>
+          <tr>Título</tr>
+          <tr>Descrição</tr>
+        </thead>
+        <tbody>
+          <tr v-for="curso,chave in cursos2">
+            {{chave}}
+          </tr>
+          <tr>{{curso.titulo}}</tr>
+          <tr>{{curso.descricao}}</tr>
+        </tbody>
+      </table>
 
-    Idade: <input type="text" id="inputIdade" @blur="setIdade()">
-    <p v-if="idade < 18">Menor de Idade</p>
-    <p v-ekse=>Maior de Idade</p>
-    Nota: <input type="text" id="inputNota" @blur="setNota()">
-    <p v-if="nota == ">Digite a nota do aluno</p>
-    <p v-else-if="nota >= 7 && nota <=10">Aluno aprovado</p>
-    <p v-else-if="nota >= 5 && nota < 7">Aluno em recuperação</p>
-    <p v-else-if="nota >= 0 && nota < 5">Aluno reorovado</p>
-    <p v-else>A nota informada é invalida</p>
+      <hr>
+      <ul>
+        <li v-for="p in publicacoes" style="border:solid;margin-bottom:10px;" ::key="p.id">
+          <div>
+            {{p.publicacao}}
+            <hr>
+            <input type="text">
+          </div>
+        </li>
+      </ul>
+      <button @click="misturarArray()">Misturar publicações</button>
+    </div>
+
+    <div v-html>{{elementoHTML}}</div>
     <!-- efeito blur onde o input do mouse perde o foco -->
   </div>
   <script>
     options = {
       el: '#app',
       data: {
-        saldo: 4570,
-        exibirSaldo: true,
-        idade: 0,
-        nota: 0
+        exibirTextoAjuda: true,
+        elementoHTML: '<p>   <b>Site</b><a href="https://jorgesantana.net.br">Jorge Santana</a></p>',
+        cursos: ['Laravel', "C#", "Banco de Dados", "JQuery", "Angular"],
+        cursos2: {
+          1000: { titulo: 'Laravel', descricao: 'Domine o framework PHP mais poderoso do mundo' },
+          1001: { titulo: "Banco de Dados", descricao: 'Aprenda os bancos de dados relacionados ao mercado' }
+        },
+        publicacoes: [{ id: 1, publicacao: 'Publicacao 1' }, { id: 2, publicacao: 'Publicacao 2' }, { id: 3, publicacao: 'Publicacao 3' }]
       },
       methods: {
-        selecionarElementoFilho() {
+        misturarArray() {
+          let misturado = [];
+          misturado[2] = this.publicacoes[2]
+          misturado[0] = this.publicacoes[0]
+          misturado[1] = this.publicacoes[1]
 
-          console.log(paragrafo.style)
-
+          this.publicacoes = misturado
         },
-        setIdade() {
-          this.idade = inputIdade.value
-        },
-        setNota() {
-          this.nota = inputNota.value
-          console.log(this.nota)
+        modificarElemento() {
+          this.$set(this.comentarios, 1, { id: 2, comentario: 'Comentario 2 atualizado' })
         }
       }
     }
