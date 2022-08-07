@@ -20,7 +20,7 @@ class MarcaController extends Controller
     {
         $marcas = $this->marca->all();
 
-        return $marcas;
+        return response()->json($marcas, 200);
     }
 
     /**
@@ -41,9 +41,14 @@ class MarcaController extends Controller
      */
     public function store(Request $request)
     {
+        //nome
+        //imagem
+
+        $request->validate($this->marca->rules(), $this->marca->feedback());
+        //stateless -> proponha uqe cada requisicao seja unica, quando usa api ocorre inesperadamente e redireciona os parametros para a rota anterior e no stateless nao dita a requisicao anterior por isso volta para a principal
         $marcas = $this->marca->create($request->all());
 
-        return $marcas;
+        return response()->json($marcas, 201);
     }
 
     /**
@@ -85,10 +90,11 @@ class MarcaController extends Controller
     {
         $marca = $this->marca->find($id);
         if ($marca === null) {
-            return ['erro' => 'Impossível realizar a atualização. O recurso solicitado não existe'];
+            return response()->json(['erro' => 'Impossível realizar a atualização. O recurso solicitado não existe'], 404);
         }
+        $request->validate($marca);
         $marca->update($request->all());
-        return $marca;
+        return response()->json($marca, 200);
     }
 
     /**
@@ -101,10 +107,10 @@ class MarcaController extends Controller
     {
         $marca = $this->marca->find($id);
         if ($marca === null) {
-            return ['erro' => 'Impossível realizar a exclusão. O recurso solicitado não existe'];
+            return response()->json(['erro' => 'Impossível realizar a exclusão. O recurso solicitado não existe'], 404);
         }
         $marca->delete();
-        return ['msg' => 'A marca foi removida com sucesso'];
+        return response()->json(['msg' => 'A marca foi removida com sucesso'], 200);
         //
     }
 }
