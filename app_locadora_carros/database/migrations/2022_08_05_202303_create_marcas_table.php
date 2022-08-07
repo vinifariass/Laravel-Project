@@ -11,13 +11,16 @@ class CreateMarcasTable extends Migration
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('marcas', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
-    }
+        public function up()
+        {
+            Schema::create('marcas', function (Blueprint $table) {
+                $table->id();
+                $table->string('nome', 30)->unique();
+                $table->string('imagem', 100)->comment('Logo da marca');
+                $table->timestamps();
+            });
+        }
+        
 
     /**
      * Reverse the migrations.
