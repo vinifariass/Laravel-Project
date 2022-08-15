@@ -21,12 +21,19 @@ class ModeloController extends Controller
     {
         //$marcas = Marca::all();
         $modelos = array();
-        if ($request->has('atributos')) {
-            $atributos = $request->atributo;
-            $modelos = $this->modelo->select($atributos)->get();
-            //''id,nome,imagem
+        if ($request->has('atributos_marca')) {
+            $atributos_marca = $request->atributos_marca;
+            $modelos = $this->modelo->with('marca:id' . $atributos_marca);
         } else {
-            $modelos = $this->modelo->with('marca')->get();
+            $modelos = $this->modelo->with('marca');
+        }
+        if ($request->has('atributos')) {
+            $atributos = $request->atributos;
+            $modelos = $modelos->selectRaw($atributos)->get();
+            //''id,nome,imagem
+            //selectRaw -> seleciona como uma string unica
+        } else {
+            $modelos = $modelos->get();
         }
         return response()->json($modelos, 200);
         //all()-> criando um obj de consulta + get()= collection
