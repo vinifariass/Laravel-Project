@@ -17,10 +17,20 @@ class ModeloController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //$marcas = Marca::all();
-        return response()->json($this->modelo->all(), 200);
+        $modelos = array();
+        if ($request->has('atributos')) {
+            $atributos = $request->atributo;
+            $modelos = $this->modelo->select($atributos)->get();
+            //''id,nome,imagem
+        } else {
+            $modelos = $this->modelo->with('marca')->get();
+        }
+        return response()->json($modelos, 200);
+        //all()-> criando um obj de consulta + get()= collection
+        //get()-> modificar a consulta
     }
 
     /**
@@ -67,7 +77,7 @@ class ModeloController extends Controller
      */
     public function show($id)
     {
-        $modelo = $this->modelo->find($id);
+        $modelo = $this->modelo->with('marca')->find($id);
         if ($modelo === null) {
             return response()->json(['erro' => 'Recurso pesquisado não existe'], 404);
         }
@@ -124,16 +134,18 @@ class ModeloController extends Controller
 
         $imagem = $request->file('imagem');
         $imagem_urn = $imagem->store('imagens/modelos', 'public');
-
-        $modelo->update([
-            'marca_id' => $request->marca_id,
-            'nome' => $request->nome,
-            'imagem' => $imagem_urn,
-            'numero_portas' => $request->numero_portas,
-            'lugares' => $request->lugares,
-            'air_bag' => $request->air_bag,
-            'abs' => $request->abs,
-        ]);
+        $modelo->fill($request->all());
+        $modelo->imagem = $imagem_urn;
+        $modelo->save();
+        // $modelo->update([
+        //     'marca_id' => $request->marca_id,
+        //     'nome' => $request->nome,
+        //     'imagem' => $imagem_urn,
+        //     'numero_portas' => $request->numero_portas,
+        //     'lugares' => $request->lugares,
+        //     'air_bag' => $request->air_bag,
+        //     'abs' => $request->abs,
+        // ]);
 
         return response()->json($modelo, 200);
     }
@@ -152,7 +164,7 @@ class ModeloController extends Controller
             return response()->json(['erro' => 'Impossível realizar a exclusão. O recurso solicitado não existe'], 404);
         }
 
-            Storage::disk('public')->delete($modelo->imagem);
+        Storage::disk('public')->delete($modelo->imagem);
 
         $modelo->delete();
         return response()->json(['msg' => 'O modelo foi removido com sucesso!'], 200);
