@@ -17,10 +17,37 @@ class MarcaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $marcas = array();
+        if ($request->has('atributos_modelos')) {
+            $atributos_modelos = $request->atributos_modelos;
+            $modelos = $this->marca->with('modelos:id' . $atributos_modelos);
+        } else {
+            $marcas = $this->marca->with('modelos');
+        }
+        
+
+        if ($request->has('filtro')) {
+            $filtros = explode(';', $request->filtro);
+            foreach ($filtros as $key => $condicao) {
+                $c = explode(':', $condicao);
+                $marcas = $marcas->where($c[0], $c[1], $c[2]);
+            }
+            //passar o filtro de pesquisa
+        }
+
+        if ($request->has('atributos')) {
+            $atributos = $request->atributos;
+            $marcas = $marcas->selectRaw($atributos)->get();
+            //''id,nome,imagem
+            //selectRaw -> seleciona como uma string unica
+        } else {
+            $marcas = $marcas->get();
+        }
+
         //$marcas = Marca::all();
-        $marcas = $this->marca->with('modelos')->get();
+        // $marcas = $this->marca->with('marcas')->get();
         return response()->json($marcas, 200);
     }
 
@@ -139,7 +166,7 @@ class MarcaController extends Controller
      * @param  Integer
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request,$id)
+    public function destroy(Request $request, $id)
     {
         $marca = $this->marca->find($id);
 
@@ -147,7 +174,7 @@ class MarcaController extends Controller
             return response()->json(['erro' => 'Impossível realizar a exclusão. O recurso solicitado não existe'], 404);
         }
 
-            Storage::disk('public')->delete($marca->imagem);
+        Storage::disk('public')->delete($marca->imagem);
 
         $marca->delete();
         return response()->json(['msg' => 'A marca foi removida com sucesso!'], 200);
