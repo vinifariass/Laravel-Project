@@ -23,7 +23,7 @@ class MarcaController extends Controller
         $marcaRepository = new MarcaRepository($this->marca);
         //atributo de marca controller que é iniciado no construct
         if ($request->has('atributos_modelos')) {
-            $atributos_modelos = 'modelos:id' . $request->atributos_modelos;
+            $atributos_modelos = 'modelos:id,' . $request->atributos_modelos;
             $marcaRepository->selectAtributosRegistrosRelacionados($atributos_modelos);
         } else {
             $marcaRepository->selectAtributosRegistrosRelacionados('modelos');
