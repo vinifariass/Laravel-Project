@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Marca;
+use App\Repositories\MarcaRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -19,36 +20,31 @@ class MarcaController extends Controller
      */
     public function index(Request $request)
     {
-        $marcas = array();
+        $marcaRepository = new MarcaRepository($this->marca);
+        //atributo de marca controller que é iniciado no construct
         if ($request->has('atributos_modelos')) {
-            $atributos_modelos = $request->atributos_modelos;
-            $modelos = $this->marca->with('modelos:id' . $atributos_modelos);
+            $atributos_modelos = 'modelos:id' . $request->atributos_modelos;
+            $marcaRepository->selectAtributosRegistrosRelacionados($atributos_modelos);
         } else {
-            $marcas = $this->marca->with('modelos');
+            $marcaRepository->selectAtributosRegistrosRelacionados('modelos');
         }
-        
 
         if ($request->has('filtro')) {
-            $filtros = explode(';', $request->filtro);
-            foreach ($filtros as $key => $condicao) {
-                $c = explode(':', $condicao);
-                $marcas = $marcas->where($c[0], $c[1], $c[2]);
-            }
+            $marcaRepository->filtro($request->filtro);
             //passar o filtro de pesquisa
         }
 
+
         if ($request->has('atributos')) {
             $atributos = $request->atributos;
-            $marcas = $marcas->selectRaw($atributos)->get();
+            $marcaRepository->selectAtributos($request->atributos);
             //''id,nome,imagem
             //selectRaw -> seleciona como uma string unica
-        } else {
-            $marcas = $marcas->get();
         }
 
         //$marcas = Marca::all();
         // $marcas = $this->marca->with('marcas')->get();
-        return response()->json($marcas, 200);
+        return response()->json($marcaRepository->getResultado(), 200);
     }
 
     /**
