@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Carro;
 use App\Models\Marca;
 use App\Repositories\CarroRepository;
-use App\Repositories\MarcaRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
