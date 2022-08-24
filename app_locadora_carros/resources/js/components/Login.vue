@@ -8,7 +8,7 @@
 
           <div class="card-body">
             <form method="POST" action="">
-
+              <input type="text" name="_token" :value="csrf_token">
               <div class="form-group row">
                 <label for="email" class="col-md-4 col-form-label text-md-right">E-mail</label>
 
@@ -62,5 +62,10 @@
 </template>
 
 <script>
-
+export default {
+  //Define as propriedades do component
+  props: [
+    'xyz', 'abc', 'csrf_token'
+  ]
+}
 </script>
