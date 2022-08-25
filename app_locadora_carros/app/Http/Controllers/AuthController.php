@@ -6,31 +6,38 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
-    {
-        $credenciais = $request->all(['email', 'senha']);
+    public function login(Request $request) {
+        
+        $credenciais = $request->all(['email', 'password']); //[]
+
+        //autenticação (email e senha)
         $token = auth('api')->attempt($credenciais);
-        //tentativa de autenticação
-        if ($token) {
+        
+        if($token) { //usuário autenticado com sucesso
             return response()->json(['token' => $token]);
-        } else { //erro de usuario com senha
-            return response()->json(['erro' => 'Usuário ou senha inválido'], 403);
-            //403 -> forbidden -> proibido (login inválido)
+
+        } else { //erro de usuário ou senha
+            return response()->json(['erro' => 'Usuário ou senha inválido!'], 403);
+
+            //401 = Unauthorized -> não autorizado
+            //403 = forbidden -> proibido (login inválido)
         }
+
+        //retornar um Json Web Token
         return 'login';
     }
-    public function logout()
-    {
-         auth('api')->logout();
-        return response()->json(['msg'=>'O logout foi realizado com sucesso']);
+
+    public function logout() {
+        auth('api')->logout();
+        return response()->json(['msg' => 'Logout foi realizado com sucesso!']);
     }
-    public function refresh()
-    {
-        $token = auth('api')->refresh();
+
+    public function refresh() {
+        $token = auth('api')->refresh(); //cliente encaminhe um jwt válido
         return response()->json(['token' => $token]);
     }
-    public function me()
-    {
+
+    public function me() {
         return response()->json(auth()->user());
     }
 }

@@ -7,13 +7,13 @@
           <div class="card-header">Login (Componente Vue)</div>
 
           <div class="card-body">
-            <form method="POST" action="">
+            <form method="POST" action="" @submit.prevent="login($event)">
               <input type="text" name="_token" :value="csrf_token">
               <div class="form-group row">
                 <label for="email" class="col-md-4 col-form-label text-md-right">E-mail</label>
 
                 <div class="col-md-6">
-                  <input id="email" type="email" class="form-control " name="email" value="" required
+                  <input id="email" type="email" class="form-control " name="email" value="" required v-model="email"
                     autocomplete="email" autofocus>
 
 
@@ -24,7 +24,7 @@
                 <label for="password" class="col-md-4 col-form-label text-md-right">Senha</label>
 
                 <div class="col-md-6">
-                  <input id="password" type="password" class="form-control" name="password" required
+                  <input id="password" type="password" class="form-control" name="password" required v-model="password"
                     autocomplete="current-password">
 
                 </div>
@@ -62,10 +62,39 @@
 </template>
 
 <script>
+import { response } from 'express'
+
 export default {
   //Define as propriedades do component
   props: [
-    'xyz', 'abc', 'csrf_token'
-  ]
+    'csrf_token'
+  ],
+  data() {
+    return {
+      email: '', password: ''
+    }
+  },
+  methods: {
+    login(e) {
+      let url = 'http://localhost:8000/api/login'
+      let configuracao = {
+        method: 'post',
+        body: new URLSearchParams({
+          'email': this.email,
+          'password': this.password
+        })
+      }
+      console.log('chegamos até aqui')
+      fetch(url, configuracao)
+        .then(response => response.json())
+        .then(data => {
+          if (data.token) {
+          document.cookie ='token='+ data.token+';SameSite=Lax'
+          }
+        })
+      // recuperacao assincrona
+      e.target.submit()
+    }
+  }
 }
 </script>
