@@ -62,20 +62,18 @@
 </template>
 
 <script>
-import { response } from 'express'
 
 export default {
-  //Define as propriedades do component
-  props: [
-    'csrf_token'
-  ],
+  props: ['csrf_token'], //data (semelhante)
   data() {
     return {
-      email: '', password: ''
+      email: '',
+      password: ''
     }
   },
   methods: {
     login(e) {
+
       let url = 'http://localhost:8000/api/login'
       let configuracao = {
         method: 'post',
@@ -84,16 +82,16 @@ export default {
           'password': this.password
         })
       }
-      console.log('chegamos até aqui')
+
       fetch(url, configuracao)
         .then(response => response.json())
         .then(data => {
           if (data.token) {
-          document.cookie ='token='+ data.token+';SameSite=Lax'
+            document.cookie = 'token=' + data.token + ';SameSite=Lax'
           }
+          //dar sequência no envio do form de autenticação por sessão
+          e.target.submit()
         })
-      // recuperacao assincrona
-      e.target.submit()
     }
   }
 }
