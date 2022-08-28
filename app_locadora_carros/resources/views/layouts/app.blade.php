@@ -48,7 +48,7 @@
                                 <div class="dropdown-menu">
                                     <a href="#" class="dropdown-item">Carros</a>
                                     <div class="dropdown-divider"></div>
-                                    <a href="{{route('marcas')}}" class="dropdown-item">Marcas</a>
+                                    <a href="{{ route('marcas') }}" class="dropdown-item">Marcas</a>
                                     <a href="#" class="dropdown-item">Modelos</a>
                                 </div>
                             </li>
@@ -94,7 +94,15 @@
                 </div>
             </div>
         </nav>
-
+        @auth
+            <nav aria-label="bradcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
+                    <li class="breadcrumb-item active"><a aria-current="page">{{ Route::currentRouteName() }}</a></li>
+                    {{-- retorna o nome da rota ativa no momento --}}
+                </ol>
+            </nav>
+        @endauth
         <main class="py-4">
             @yield('content')
         </main>
