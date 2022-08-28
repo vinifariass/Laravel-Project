@@ -88,7 +88,20 @@ export default {
       urlBase: 'http://localhost:8000/api/v1/marca'
     }
   },
+  computed: {
+    token() {
+      let token = document.cookie.split(';').find(indice => {
+        console.log(indice.startsWith('token=')
+          //pega o que começa com token=
+        )
+      })
+      token = token.split(';')[1]
+      token = 'Bearer' + token;
+      return 'teste'
+    }
+  },
   methods: {
+
     carregarImagem(e) {
       this.arquivoImagem = e.target.files
       //forma como recupera os arquivos atribuidos no formulario
@@ -101,7 +114,8 @@ export default {
       let config = {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Accept': 'application/json'
+          'Accept': 'application/json',
+          'Authorization': this.token
         }
 
       }
@@ -112,7 +126,8 @@ export default {
         })
       //metodo que faz uma requisição para localhost v1 marca,
       //passa o conteudo que sao enviados e as configuracoes no terceiro parametro
-    }
+    },
+
   }
 }
 </script>

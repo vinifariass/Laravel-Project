@@ -2357,6 +2357,17 @@ __webpack_require__.r(__webpack_exports__);
       urlBase: 'http://localhost:8000/api/v1/marca'
     };
   },
+  computed: {
+    token: function token() {
+      var token = document.cookie.split(';').find(function (indice) {
+        console.log(indice.startsWith('token=') //pega o que começa com token=
+        );
+      });
+      token = token.split(';')[1];
+      token = 'Bearer' + token;
+      return 'teste';
+    }
+  },
   methods: {
     carregarImagem: function carregarImagem(e) {
       this.arquivoImagem = e.target.files; //forma como recupera os arquivos atribuidos no formulario
@@ -2369,7 +2380,8 @@ __webpack_require__.r(__webpack_exports__);
       var config = {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Accept': 'application/json'
+          'Accept': 'application/json',
+          'Authorization': this.token
         }
       };
       axios.post(this.urlBase, formData, config).then(function (response) {
