@@ -35,7 +35,7 @@
           <!-- Inicio card listagem de marcas -->
           <card-component titulo="Relação de marcas">
             <template v-slot:conteudo>
-              <table-component></table-component>
+              <table-component :dados="marcas"></table-component>
             </template>
             <template v-slot:rodape>
               <button type="button" class="btn btn-primary btn-sm float-right" data-toggle="modal"
@@ -95,7 +95,7 @@ export default {
       arquivoImagem: [],
       urlBase: 'http://localhost:8000/api/v1/marca',
       transacaoStatus: '',
-      transacaoDetalhes: ''
+      transacaoDetalhes: {}
     }
   },
   computed: {
@@ -112,7 +112,21 @@ export default {
     }
   },
   methods: {
+    carregarLista() {
 
+      let config = {
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': this.token
+        }
+
+      }
+      axios.get(this.urlBase)
+        .then(response => { console.log(response); }).catch(errors => {
+          console.log(errors);
+        })
+      //passa o dados retornados quando é acessada
+    },
     carregarImagem(e) {
       this.arquivoImagem = e.target.files
       //forma como recupera os arquivos atribuidos no formulario
@@ -128,22 +142,27 @@ export default {
           'Accept': 'application/json',
           'Authorization': this.token
         }
-
       }
       axios.post(this.urlBase, formData, config)
         .then(response => {
           this.transacaoStatus = 'adicionado'
-          this.transacaoDetalhes = response
+          this.transacaoDetalhes = { mensagem: 'ID do Registro' + reponse.data.id }
         })
         .catch(errors => {
           this.transacaoStatus = 'erro'
-          this.transacaoDetalhes = erros.response
+          this.transacaoDetalhes = {
+            mensagem: errors.response.data.message,
+            dados: errors.response.data.errors
+          }
           // console.log(errors.response.data.message);
         })
       //metodo que faz uma requisição para localhost v1 marca,
       //passa o conteudo que sao enviados e as configuracoes no terceiro parametro
     },
 
+  },
+  mounted() {
+    this.carregarLista()
   }
 }
 </script>
