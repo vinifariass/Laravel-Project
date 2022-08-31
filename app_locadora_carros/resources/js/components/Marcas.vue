@@ -48,8 +48,15 @@
       </div>
     </div>
 
-
     <modal-component id="modalMarca" titulo="Adicionar marca">
+      <template v-slot:alertas>
+        <alert-componet tipo="success" :detalhes="transacaoDetalhes" titulo="Cadastro realizado com sucesso"
+          v-if="transacaoStatus == 'adicionado'"></alert-componet>
+        <alert-componet tipo="danger" v-if="transacaoStatus == 'erro'" :detalhes="transacaoDetalhes"
+          titulo="Erro ao tentar cadastrar a marca"></alert-componet>
+
+
+      </template>
       <template v-slot:conteudo>
         <div class="form-group">
           <input-container-component titulo="Nome da marca" id="novoNome" id-help="novoNomeHelp"
@@ -84,20 +91,24 @@
 export default {
   data() {
     return {
-      nomeMarca: '', arquivoImagem: [],
-      urlBase: 'http://localhost:8000/api/v1/marca'
+      nomeMarca: '',
+      arquivoImagem: [],
+      urlBase: 'http://localhost:8000/api/v1/marca',
+      transacaoStatus: '',
+      transacaoDetalhes: ''
     }
   },
   computed: {
     token() {
+
       let token = document.cookie.split(';').find(indice => {
-        console.log(indice.startsWith('token=')
-          //pega o que começa com token=
-        )
+        return indice.includes('token=')
       })
-      token = token.split(';')[1]
-      token = 'Bearer' + token;
-      return 'teste'
+
+      token = token.split('=')[1]
+      token = 'Bearer ' + token
+
+      return token
     }
   },
   methods: {
@@ -120,9 +131,14 @@ export default {
 
       }
       axios.post(this.urlBase, formData, config)
-        .then(response => { console.log(response) })
+        .then(response => {
+          this.transacaoStatus = 'adicionado'
+          this.transacaoDetalhes = response
+        })
         .catch(errors => {
-          console.log(errors);
+          this.transacaoStatus = 'erro'
+          this.transacaoDetalhes = erros.response
+          // console.log(errors.response.data.message);
         })
       //metodo que faz uma requisição para localhost v1 marca,
       //passa o conteudo que sao enviados e as configuracoes no terceiro parametro
