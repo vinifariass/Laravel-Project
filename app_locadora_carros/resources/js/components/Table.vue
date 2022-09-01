@@ -12,7 +12,7 @@
         <th scope="row">{{ m.id }}</th>
         <td>{{ m.nome }}</td>
         <td>{{ m.imagem }}</td>
-        <td><img :src="/storage/+m.imagem" alt=""></td>
+        <td><img  width="30" height="30" :src="/storage/+m.imagem" alt=""></td>
       </tr>
 
     </tbody>
