@@ -35,7 +35,7 @@
           <!-- Inicio card listagem de marcas -->
           <card-component titulo="Relação de marcas">
             <template v-slot:conteudo>
-              <table-component :dados="marcas" titulos="['ID','Nome','Imagem']"></table-component>
+              <table-component :dados="marcas" :titulos="{ id:{titulo:'ID',tipo:'text'}, nome:{titulo:'Nome',tipo:'text'}, imagem:{titulo:'Imagem',tipo:'imagem'}, created_at:{titulo:'Data de criação',tipo:'data'}}"></table-component>
             </template>
             <template v-slot:rodape>
               <button type="button" class="btn btn-primary btn-sm float-right" data-toggle="modal"
@@ -64,7 +64,7 @@
             <input type="text" class="form-control" id="novoNome" aria-describedby="novoNomeHelp"
               placeholder="Nome da marca" v-model="nomeMarca">
           </input-container-component>
-          {{  nomeMarca  }}
+          {{ nomeMarca }}
 
         </div>
 
@@ -73,7 +73,7 @@
             texto-ajuda="Selecione uma imagem no formato PNG">
             <input type="file" class="form-control-file" id="novoImagem" aria-describedby="novoImagemHelp"
               placeholder="Selecione uma imagem" @change="carregarImagem($event)">
-            {{  arquivoImagem  }}
+            {{ arquivoImagem }}
           </input-container-component>
         </div>
       </template>
