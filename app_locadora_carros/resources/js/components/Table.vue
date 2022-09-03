@@ -10,10 +10,12 @@
       <tr>
         <td v-for="obj, chave in dadosFiltrados" :key="chave"></td>
         <td v-for="valor, chaveValor in obj" :key="chaveValor">
-          <span v-for="titulos[chaveValor].tipo == 'texto'">{{ valor }}</span>
-          <span v-for="titulos[chaveValor].tipo == 'imagem'">{{ '...' + valor }}</span>
-          <span v-for="titulos[chaveValor].tipo == 'data'">
-            <img src="'/storage/'+valor" width="30" height="30" alt="">
+          <span v-if="titulos[chaveValor].tipo == 'texto'">{{valor}}</span>
+          <span v-if="titulos[chaveValor].tipo == 'data'">
+              {{ '...'+valor}}
+          </span>
+          <span v-if="titulos[chaveValor].tipo == 'imagem'">
+              <img :src="'/storage/'+valor" width="30" height="30">
           </span>
         </td>
       </tr>
