@@ -9,24 +9,15 @@
     <tbody>
       <tr>
         <td v-for="obj, chave in dadosFiltrados" :key="chave"></td>
-        <td v-for="valor, chaveValor in obj" :key="chaveValor">{{ valor }}</td>
-      </tr>
-      <!-- <tr v-for="obj in dados" :key="obj.id">
-        <td v-if="titulos.includes(chave)" v-for="valor, chave in obj " :key="chave">
-          {{ chave }} - {{ valor }}
-          <span v-if="chave == 'imagem'">
-            <img :src="/storage/ + valor" alt="" width="30" height="30">
-          </span>
-          <span v-else>
-            {{ valor }}
+        <td v-for="valor, chaveValor in obj" :key="chaveValor">
+          <span v-for="titulos[chaveValor].tipo == 'texto'">{{ valor }}</span>
+          <span v-for="titulos[chaveValor].tipo == 'imagem'">{{ '...' + valor }}</span>
+          <span v-for="titulos[chaveValor].tipo == 'data'">
+            <img src="'/storage/'+valor" width="30" height="30" alt="">
           </span>
         </td>
-         <th scope="row">{{ m.id }}</th> -->
-      <!-- <td>{{ m.nome }}</td>
-        <td>{{ m.imagem }}</td>
-        <td><img width="30" height="30" :src="/storage/ + m.imagem" alt="">
-        </td> 
-      </tr> -->
+      </tr>
+
 
     </tbody>
   </table>

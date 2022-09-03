@@ -35,7 +35,9 @@
           <!-- Inicio card listagem de marcas -->
           <card-component titulo="Relação de marcas">
             <template v-slot:conteudo>
-              <table-component :dados="marcas" :titulos="{ id:{titulo:'ID',tipo:'text'}, nome:{titulo:'Nome',tipo:'text'}, imagem:{titulo:'Imagem',tipo:'imagem'}, created_at:{titulo:'Data de criação',tipo:'data'}}"></table-component>
+              <table-component :dados="marcas.data"
+                :titulos="{ id: { titulo: 'ID', tipo: 'texto' }, nome: { titulo: 'Nome', tipo: 'texto' }, imagem: { titulo: 'Imagem', tipo: 'imagem' }, created_at: { titulo: 'Data de criação', tipo: 'data' } }">
+              </table-component>
             </template>
             <template v-slot:rodape>
               <button type="button" class="btn btn-primary btn-sm float-right" data-toggle="modal"
@@ -122,7 +124,10 @@ export default {
 
       }
       axios.get(this.urlBase)
-        .then(response => { console.log(response); }).catch(errors => {
+        .then(response => {
+          this.marcas = response.data
+          console.log(this.marcas);
+        }).catch(errors => {
           console.log(errors);
         })
       //passa o dados retornados quando é acessada
