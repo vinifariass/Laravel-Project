@@ -27,8 +27,8 @@
               <div class="col-10">
                 <paginate-component>
 
-                  <li v-for="l, key in marcas.links  " :key="key" class="page-item"><a class="page-link" href="#"
-                      v-html="l.label"></a></li>
+                  <li v-for="l, key in marcas.links  " :key="key" class="page-item" @click="paginacao(l)">
+                    <a class="page-link" href="#" v-html="l.label"></a></li>
                 </paginate-component>
               </div>
               <div class="col">
@@ -122,11 +122,19 @@ export default {
 
       token = token.split('=')[1]
       token = 'Bearer ' + token
-
+      F
       return token
     }
   },
   methods: {
+
+    paginacao(l) {
+      if (l.url) {
+        this.urlBase = l.url //ajustando a url de consulta com o parametro de pagina
+        this.carregarLista() //requisitando novamente os dados de pagina
+
+      }
+    },
     carregarLista() {
 
       let config = {
@@ -139,7 +147,7 @@ export default {
       axios.get(this.urlBase)
         .then(response => {
           this.marcas = response.data
-          console.log(this.marcas);
+          // console.log(this.marcas);
         }).catch(errors => {
           console.log(errors);
         })
