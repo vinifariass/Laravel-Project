@@ -23,8 +23,20 @@
             </div>
           </template>
           <template v-slot:rodape>
+            <div class="row">
+              <div class="col-10">
+                <paginate-component>
 
-            <button type="submit" class="btn btn-primary btn-sm float-right">Pesquisar</button>
+                  <li v-for="l, key in marcas.links  " :key="key" class="page-item" @click="paginacao(l)">
+                    <a class="page-link" href="#" v-html="l.label"></a></li>
+                </paginate-component>
+              </div>
+              <div class="col">
+
+                <button type="submit" class="btn btn-primary btn-sm float-right">Pesquisar</button>
+              </div>
+
+            </div>
 
           </template>
         </card-component>
@@ -35,7 +47,9 @@
           <!-- Inicio card listagem de marcas -->
           <card-component titulo="Relação de marcas">
             <template v-slot:conteudo>
-              <table-component :dados="marcas" :titulos="{ id:{titulo:'ID',tipo:'text'}, nome:{titulo:'Nome',tipo:'text'}, imagem:{titulo:'Imagem',tipo:'imagem'}, created_at:{titulo:'Data de criação',tipo:'data'}}"></table-component>
+              <table-component :dados="marcas.data"
+                :titulos="{ id: { titulo: 'ID', tipo: 'texto' }, nome: { titulo: 'Nome', tipo: 'texto' }, imagem: { titulo: 'Imagem', tipo: 'imagem' }, created_at: { titulo: 'Data de criação', tipo: 'data' } }">
+              </table-component>
             </template>
             <template v-slot:rodape>
               <button type="button" class="btn btn-primary btn-sm float-right" data-toggle="modal"
@@ -95,7 +109,8 @@ export default {
       arquivoImagem: [],
       urlBase: 'http://localhost:8000/api/v1/marca',
       transacaoStatus: '',
-      transacaoDetalhes: {}
+      transacaoDetalhes: {},
+      marcas: { data: [] }
     }
   },
   computed: {
@@ -107,11 +122,19 @@ export default {
 
       token = token.split('=')[1]
       token = 'Bearer ' + token
-
+      F
       return token
     }
   },
   methods: {
+
+    paginacao(l) {
+      if (l.url) {
+        this.urlBase = l.url //ajustando a url de consulta com o parametro de pagina
+        this.carregarLista() //requisitando novamente os dados de pagina
+
+      }
+    },
     carregarLista() {
 
       let config = {
@@ -122,7 +145,10 @@ export default {
 
       }
       axios.get(this.urlBase)
-        .then(response => { console.log(response); }).catch(errors => {
+        .then(response => {
+          this.marcas = response.data
+          // console.log(this.marcas);
+        }).catch(errors => {
           console.log(errors);
         })
       //passa o dados retornados quando é acessada
