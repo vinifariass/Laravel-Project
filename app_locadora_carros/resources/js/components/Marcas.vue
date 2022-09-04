@@ -8,14 +8,15 @@
               <div class="col mb-3">
                 <input-container-component titulo="ID" id="inputId" id-help="idHelp"
                   texto-ajuda="Opcional. Informe o ID da marca">
-                  <input type="number" class="form-control" id="inputId" aria-describedby="idHelp" placeholder="ID">
+                  <input type="number" class="form-control" id="inputId" aria-describedby="idHelp" placeholder="ID"
+                    v-model="busca.id">
                 </input-container-component>
               </div>
               <div class="col mb-3">
                 <input-container-component titulo="Nome da marca" id="inputNome" id-help="nomeHelp"
                   texto-ajuda="Opcional. Informe o nome da marca">
-                  <input type="text" class="form-control" id="inputNome" aria-describedby="nomeHelp"
-                    placeholder="Nome da marca">
+                  <input type="text" class="form-control" id="inputNome" aria-describedby="nomeHelp "
+                    v-model="busca.nome" placeholder="Nome da marca">
                 </input-container-component>
 
               </div>
@@ -26,14 +27,16 @@
             <div class="row">
               <div class="col-10">
                 <paginate-component>
-
-                  <li v-for="l, key in marcas.links  " :key="key" class="page-item" @click="paginacao(l)">
-                    <a class="page-link" href="#" v-html="l.label"></a></li>
+                  <li v-for="l, key in marcas.links  " :key="key" :class="l.active ? 'page-item active' : 'page-item'"
+                    @click="paginacao(l)">
+                    <!-- v-bind na classe -->
+                    <a class="page-link" v-html="l.label"></a>
+                  </li>
                 </paginate-component>
               </div>
               <div class="col">
 
-                <button type="submit" class="btn btn-primary btn-sm float-right">Pesquisar</button>
+                <button type="submit" class="btn btn-primary btn-sm float-right" @click="pesquisar()">Pesquisar</button>
               </div>
 
             </div>
@@ -47,7 +50,7 @@
           <!-- Inicio card listagem de marcas -->
           <card-component titulo="Relação de marcas">
             <template v-slot:conteudo>
-              <table-component :dados="marcas.data"
+              <table-component :dados="marcas.data" :visualizar="{visivel:true,dataToggle:'modal',dataTarget:'#modalMarcaVisualizar'}" :atualizar="true" :remover="true"
                 :titulos="{ id: { titulo: 'ID', tipo: 'texto' }, nome: { titulo: 'Nome', tipo: 'texto' }, imagem: { titulo: 'Imagem', tipo: 'imagem' }, created_at: { titulo: 'Data de criação', tipo: 'data' } }">
               </table-component>
             </template>
@@ -61,7 +64,7 @@
         </div>
       </div>
     </div>
-
+    <!-- inicio modal inclusao de marca -->
     <modal-component id="modalMarca" titulo="Adicionar marca">
       <template v-slot:alertas>
         <alert-componet tipo="success" :detalhes="transacaoDetalhes" titulo="Cadastro realizado com sucesso"
@@ -98,6 +101,21 @@
       </template>
 
     </modal-component>
+    <!-- fim modal inclusao de marca -->
+    <!-- inicio modal visualizacao de marca -->
+
+    <modal-component id="modalMarcaVisualizar" titulo="Visualizar marca">
+      <template v-slot:alertas>
+      </template>
+      <template v-slot:conteudo>
+        Teste
+      </template>
+      <template v-slot:rodape>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+      </template>
+
+    </modal-component>
+
   </div>
 </template>
 
@@ -110,10 +128,14 @@ export default {
       urlBase: 'http://localhost:8000/api/v1/marca',
       transacaoStatus: '',
       transacaoDetalhes: {},
-      marcas: { data: [] }
+      marcas: { data: [] },
+      busca: { id: '', nome: '' },
+      urlPaginacao: '',
+      urlFiltro: ''
     }
   },
   computed: {
+
     token() {
 
       let token = document.cookie.split(';').find(indice => {
@@ -127,24 +149,26 @@ export default {
     }
   },
   methods: {
-
+    pesquisar() {
+      console.log(this.busca);
+      let filtro = ''
+      for (let chave in this.busca) {
+        filtro += chave + ':like:' + this.busca[chave]
+      }
+      if (filtro != '')
+        this.urlFiltro = '&filtro' + filtro
+    },
     paginacao(l) {
       if (l.url) {
-        this.urlBase = l.url //ajustando a url de consulta com o parametro de pagina
+        //this.urlBase = l.url //ajustando a url de consulta com o parametro de pagina
+        this.urlPaginacao = l.url.split('?')[1]
         this.carregarLista() //requisitando novamente os dados de pagina
 
       }
     },
     carregarLista() {
-
-      let config = {
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': this.token
-        }
-
-      }
-      axios.get(this.urlBase)
+      let url = this.urlBase + '?' + this.urlPaginacao + this.urlFiltro
+      axios.get(url)
         .then(response => {
           this.marcas = response.data
           // console.log(this.marcas);
@@ -152,6 +176,13 @@ export default {
           console.log(errors);
         })
       //passa o dados retornados quando é acessada
+      let config = {
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': this.token
+        }
+
+      }
     },
     carregarImagem(e) {
       this.arquivoImagem = e.target.files

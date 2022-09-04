@@ -2,7 +2,7 @@
 <template>
 
   <nav aria-label="Page navigation example">
-    <ul class="pagination">
+    <ul style="cursor:pointer;" class="pagination">
    <slot></slot>
     </ul>
   </nav>
