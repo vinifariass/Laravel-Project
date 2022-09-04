@@ -52,8 +52,7 @@
             <template v-slot:conteudo>
               <table-component :dados="marcas.data"
                 :visualizar="{ visivel: true, dataToggle: 'modal', dataTarget: '#modalMarcaVisualizar' }"
-                :atualizar="true" 
-                :remover="{visivel:true,dataToggle:'modal', dataTarget:'#modalMarcaRemover'}"
+                :atualizar="true" :remover="{ visivel: true, dataToggle: 'modal', dataTarget: '#modalMarcaRemover' }"
                 :titulos="{ id: { titulo: 'ID', tipo: 'texto' }, nome: { titulo: 'Nome', tipo: 'texto' }, imagem: { titulo: 'Imagem', tipo: 'imagem' }, created_at: { titulo: 'Data de criação', tipo: 'data' } }">
               </table-component>
             </template>
@@ -148,6 +147,7 @@
       </template>
       <template v-slot:rodape>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        <button type="button" class="btn btn-damger" @click="remover()">Remover</button>
       </template>
 
     </modal-component>
@@ -193,6 +193,28 @@ export default {
       }
       if (filtro != '')
         this.urlFiltro = '&filtro' + filtro
+    },
+    remover() {
+      let confirmacao = confirm("Tem certeza que deseja remover esse registro?")
+      if (!confirmacao)
+        return false
+
+      let config = {
+        headers: {
+          'Accept': 'application.json',
+          'Autorizatio-n': this.token
+        }
+      }
+
+      let url = this.urlBase + '/' + this.$store.state.item.id
+      let formData = new FormData();
+      formData.append('_method', 'delete');
+      axios.post(url, formData, config).then | (response =>
+        console.log('Registro removido com sucesso', response))
+        this.carregarLista()
+        .catch(errors => {
+          console.log('Houve um erro na tentativa de remoção do registro', errors.data);
+        })
     },
     paginacao(l) {
       if (l.url) {
