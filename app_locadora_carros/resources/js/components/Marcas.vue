@@ -52,7 +52,8 @@
             <template v-slot:conteudo>
               <table-component :dados="marcas.data"
                 :visualizar="{ visivel: true, dataToggle: 'modal', dataTarget: '#modalMarcaVisualizar' }"
-                :atualizar="true" :remover="{ visivel: true, dataToggle: 'modal', dataTarget: '#modalMarcaRemover' }"
+                :atualizar="{visivel:true,dataToggle:'modal',dataTarget:'#modalMarcaAtualizar'}"
+                :remover="{ visivel: true, dataToggle: 'modal', dataTarget: '#modalMarcaRemover' }"
                 :titulos="{ id: { titulo: 'ID', tipo: 'texto' }, nome: { titulo: 'Nome', tipo: 'texto' }, imagem: { titulo: 'Imagem', tipo: 'imagem' }, created_at: { titulo: 'Data de criação', tipo: 'data' } }">
               </table-component>
             </template>
@@ -133,8 +134,9 @@
     <!-- inicio modal remocao de marca -->
     <modal-component id="modalMarcaRemover" titulo="Remover marca">
       <template v-slot:alertas>
-        <alert-component tipo="success" titulo="Transação realizada com sucesso" :detalhes="{mensagem:$store.state.transacao}"
-          v-if="$store.state.transacao.status == 'sucesso'"></alert-component>
+        <alert-component tipo="success" titulo="Transação realizada com sucesso"
+          :detalhes="{mensagem:$store.state.transacao}" v-if="$store.state.transacao.status == 'sucesso'">
+        </alert-component>
         <alert-component tipo="danger" titulo="Erro na transação" :detalhes="{mensagem:$store.state.transacao}"
           v-if="$store.state.transacao.status == 'erro'"></alert-component>
       </template>
@@ -155,6 +157,37 @@
       </template>
 
     </modal-component>
+    <!-- inicio modal atualizacao de marcar -->
+    <modal-component id="modalMarcaAtualizar" titulo="Atualizar marca">
+      <template v-slot:alertas>
+      </template>
+      <template v-slot:conteudo>
+        <div class="form-group">
+          <input-container-component titulo="Nome da marca" id="atualizarNome" id-help="atualizarNomeHelp"
+            texto-ajuda="Opcional. Informe o nome da marca">
+            <input type="text" class="form-control" id="novoNome" aria-describedby="novoNomeHelp"
+              placeholder="Nome da marca" v-model="nomeMarca">
+          </input-container-component>
+
+        </div>
+
+        <div class="form-group">
+          <input-container-component titulo="Imagem" id="atualizarImagem" id-help="atualizarImagemHelp" texto-ajuda="Selecione uma imagem no formato PNG">
+            <input type="file" class="form-control-file" id="novoImagem" aria-describedby="novoImagemHelp"
+              placeholder="Selecione uma imagem" @change="carregarImagem($event)">
+          </input-container-component>
+        </div>
+      </template>
+
+      <template v-slot:rodape>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        <button type="button" class="btn btn-primary" @click="atualizar()">Atualizar</button>
+      </template>
+
+    </modal-component>
+    <!-- fim modal inclusao de marca -->
+    <!-- inicio modal visualizacao de marca -->
+
     <!-- Fim remoçao marca -->
   </div>
 </template>
@@ -210,21 +243,22 @@ export default {
         }
       }
 
-     
+
 
       let url = this.urlBase + '/' + this.$store.state.item.id
       let formData = new FormData();
       formData.append('_method', 'delete');
       axios.post(url, formData, config).then | (response =>
         console.log('Registro removido com sucesso', response))
-        this.$store.state.transacao.status='sucesso'
-      this.$store.state.transacao.status='Registro removido com sucesso'
-        this.carregarLista()
+      this.$store.state.transacao.status = 'sucesso'
+      this.$store.state.transacao.status = 'Registro removido com sucesso'
+      this.carregarLista()
         .catch(errors => {
-          this.$store.state.transacao.status='erro'
-      this.$store.state.transacao.status='Erro ao tentar remover o registro'
+          this.$store.state.transacao.status = 'erro'
+          this.$store.state.transacao.status = 'Erro ao tentar remover o registro'
         })
     },
+    atualizar() { },
     paginacao(l) {
       if (l.url) {
         //this.urlBase = l.url //ajustando a url de consulta com o parametro de pagina
