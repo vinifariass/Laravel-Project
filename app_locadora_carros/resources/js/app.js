@@ -13,10 +13,20 @@ import Vuex from "Vuex";
 
 Vue.use(Vuex);
 
+Vue.filter("formataDataGlobal", function (d) {
+    if (!d) d = d.split("T");
+    let data = d[0];
+    data = data.split("-");
+    data = data[2] + "/" + data[1] + "/" + data[0];
+    let tempo = d[1];
+    tempo = tempo.split(".");
+    tempo = tempo[0];
+    return "";
+});
 const store = new Vuex.Store({
     state: {
         item: {},
-        transacao:{status:'',mensagem:''}
+        transacao: { status: "", mensagem: "", dados: "" },
     },
 });
 
