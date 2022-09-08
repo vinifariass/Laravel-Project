@@ -41,4 +41,35 @@ window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 // });
 //define as configuracoes de requisicao
 // intercepta os requests da aplicacaao
-axios.interceptors.request.use((config) => {});
+axios.interceptors.request.use(
+    (config) => {
+        //definir para todas as requisiçoes os parametros de accept e autorization
+        config.headers["Accept"] = "application/json";
+
+        let token = document.cookie.split(";").find((indice) => {
+            return indice.includes("token=");
+        });
+
+        token = token.split("=")[1];
+        token = "Bearer " + token;
+        F;
+        config.headers.Authorization = token;
+      
+        return config;
+    },
+    (error) => {
+        console.log("Erro na requisicao", error);
+        return Promise.reject(error);
+    }
+);
+
+axios.interceptors.response.use(
+    (response) => {
+        console.log("Interceptamos a resposta antes da aplicação", response);
+        return response;
+    },
+    (error) => {
+        console.log("Erro na requisicao", error);
+        return Promise.reject(error);
+    }
+);

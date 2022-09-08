@@ -213,20 +213,6 @@ export default {
       urlFiltro: ''
     }
   },
-  computed: {
-
-    token() {
-
-      let token = document.cookie.split(';').find(indice => {
-        return indice.includes('token=')
-      })
-
-      token = token.split('=')[1]
-      token = 'Bearer ' + token
-      F
-      return token
-    }
-  },
   methods: {
     pesquisar() {
       console.log(this.busca);
@@ -241,20 +227,10 @@ export default {
       let confirmacao = confirm("Tem certeza que deseja remover esse registro?")
       if (!confirmacao)
         return false
-
-      let config = {
-        headers: {
-          'Accept': 'application.json',
-          'Autorizatio-n': this.token
-        }
-      }
-
-
-
       let url = this.urlBase + '/' + this.$store.state.item.id
       let formData = new FormData();
       formData.append('_method', 'delete');
-      axios.post(url, formData, config).then | (response =>
+      axios.post(url, formData).then | (response =>
         console.log('Registro removido com sucesso', response))
       this.$store.state.transacao.status = 'sucesso'
       this.$store.state.transacao.status = response.data.msg
@@ -278,8 +254,6 @@ export default {
       let config = {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Accept': 'application/json',
-          'Autorization': this.token
         }
       }
 
@@ -317,13 +291,7 @@ export default {
           console.log(errors);
         })
       //passa o dados retornados quando é acessada
-      let config = {
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': this.token
-        }
-
-      }
+     
     },
     carregarImagem(e) {
       this.arquivoImagem = e.target.files
@@ -337,11 +305,9 @@ export default {
       let config = {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Accept': 'application/json',
-          'Authorization': this.token
         }
       }
-      axios.post(this.urlBase, formData, config)
+      axios.post(this.urlBase, formData)
         .then(response => {
           this.transacaoStatus = 'adicionado'
           this.transacaoDetalhes = { mensagem: 'ID do Registro' + reponse.data.id }
