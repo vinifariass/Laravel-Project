@@ -166,13 +166,14 @@
           <input-container-component titulo="Nome da marca" id="atualizarNome" id-help="atualizarNomeHelp"
             texto-ajuda="Opcional. Informe o nome da marca">
             <input type="text" class="form-control" id="novoNome" aria-describedby="novoNomeHelp"
-              placeholder="Nome da marca" v-model="nomeMarca">
+              placeholder="Nome da marca" v-model="$store.state.item.nome">
           </input-container-component>
 
         </div>
 
         <div class="form-group">
-          <input-container-component titulo="Imagem" id="atualizarImagem" id-help="atualizarImagemHelp" texto-ajuda="Selecione uma imagem no formato PNG">
+          <input-container-component titulo="Imagem" id="atualizarImagem" id-help="atualizarImagemHelp"
+            texto-ajuda="Selecione uma imagem no formato PNG">
             <input type="file" class="form-control-file" id="novoImagem" aria-describedby="novoImagemHelp"
               placeholder="Selecione uma imagem" @change="carregarImagem($event)">
           </input-container-component>
@@ -258,69 +259,89 @@ export default {
           this.$store.state.transacao.status = 'Erro ao tentar remover o registro'
         })
     },
-    atualizar() { },
-    paginacao(l) {
-      if (l.url) {
-        //this.urlBase = l.url //ajustando a url de consulta com o parametro de pagina
-        this.urlPaginacao = l.url.split('?')[1]
-        this.carregarLista() //requisitando novamente os dados de pagina
-
-      }
-    },
-    carregarLista() {
-      let url = this.urlBase + '?' + this.urlPaginacao + this.urlFiltro
-      axios.get(url)
-        .then(response => {
-          this.marcas = response.data
-          // console.log(this.marcas);
-        }).catch(errors => {
-          console.log(errors);
-        })
-      //passa o dados retornados quando é acessada
-      let config = {
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': this.token
-        }
-
-      }
-    },
-    carregarImagem(e) {
-      this.arquivoImagem = e.target.files
-      //forma como recupera os arquivos atribuidos no formulario
-    },
-    salvar() {
-      let formData = new FormData();
-      //formulario que define os seus atributos dentro do javascript
-      formData.append('nome', this.nomeMarca)
+    atualizar() {
+      let formData = new FormData()
+      formData.append('_method', 'patch')
+      formData.append('nome', this.$store.state.item.nome)
       formData.append('imagem', this.arquivoImagem[0])
+
+      let url = this.urlBase + '/' + this.$store.state.item.id
+
       let config = {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Accept': 'application/json',
-          'Authorization': this.token
+          'Autorization': this.token
         }
       }
-      axios.post(this.urlBase, formData, config)
-        .then(response => {
-          this.transacaoStatus = 'adicionado'
-          this.transacaoDetalhes = { mensagem: 'ID do Registro' + reponse.data.id }
-        })
-        .catch(errors => {
-          this.transacaoStatus = 'erro'
-          this.transacaoDetalhes = {
-            mensagem: errors.response.data.message,
-            dados: errors.response.data.errors
-          }
-          // console.log(errors.response.data.message);
-        })
-      //metodo que faz uma requisição para localhost v1 marca,
-      //passa o conteudo que sao enviados e as configuracoes no terceiro parametro
-    },
 
+      axios.post(url, formData, config)
+      .then(response =>
+      this.carregarLista())
+      .catch(erros => console.log('Erro de atualizacao', erros))
   },
-  mounted() {
-    this.carregarLista()
-  }
+  paginacao(l) {
+    if (l.url) {
+      //this.urlBase = l.url //ajustando a url de consulta com o parametro de pagina
+      this.urlPaginacao = l.url.split('?')[1]
+      this.carregarLista() //requisitando novamente os dados de pagina
+
+    }
+  },
+  carregarLista() {
+    let url = this.urlBase + '?' + this.urlPaginacao + this.urlFiltro
+    axios.get(url)
+      .then(response => {
+        this.marcas = response.data
+        // console.log(this.marcas);
+      }).catch(errors => {
+        console.log(errors);
+      })
+    //passa o dados retornados quando é acessada
+    let config = {
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': this.token
+      }
+
+    }
+  },
+  carregarImagem(e) {
+    this.arquivoImagem = e.target.files
+    //forma como recupera os arquivos atribuidos no formulario
+  },
+  salvar() {
+    let formData = new FormData();
+    //formulario que define os seus atributos dentro do javascript
+    formData.append('nome', this.nomeMarca)
+    formData.append('imagem', this.arquivoImagem[0])
+    let config = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Accept': 'application/json',
+        'Authorization': this.token
+      }
+    }
+    axios.post(this.urlBase, formData, config)
+      .then(response => {
+        this.transacaoStatus = 'adicionado'
+        this.transacaoDetalhes = { mensagem: 'ID do Registro' + reponse.data.id }
+      })
+      .catch(errors => {
+        this.transacaoStatus = 'erro'
+        this.transacaoDetalhes = {
+          mensagem: errors.response.data.message,
+          dados: errors.response.data.errors
+        }
+        // console.log(errors.response.data.message);
+      })
+    //metodo que faz uma requisição para localhost v1 marca,
+    //passa o conteudo que sao enviados e as configuracoes no terceiro parametro
+  },
+
+},
+mounted() {
+  this.carregarLista()
+}
 }
 </script>
